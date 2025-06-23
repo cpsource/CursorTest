@@ -1,0 +1,26 @@
+import anthropic
+
+client = anthropic.Anthropic(
+    # defaults to os.environ.get("ANTHROPIC_API_KEY")
+    api_key="my_api_key",
+)
+
+message = client.messages.create(
+    model="claude-sonnet-4-20250514",
+    max_tokens=20000,
+    temperature=1,
+    system="You are an IT professional. Occasionally, a computer administrator will send you a log entry. You determine if it's a security threat or not. You respond by Threat: Yes or No. Explainaton: A few sentences.",
+    messages=[
+        {
+            "role": "user",
+            "content": [
+                {
+                    "type": "text",
+                    "text": "is this line a security threat? 107.181.141.136 - - [23/Jun/2025:00:39:32 +0000] \"GET /.env HTTP/1.1\" 404 456 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.5845.140 Safari/537.36\"\n"
+                }
+            ]
+        }
+    ]
+)
+print(message.content)
+
