@@ -1,0 +1,5 @@
+https://smith.langchain.com/hub/nicobutes/chain-of-density-prompt?organizationId=fba4452d-b6f9-4302-b4ba-5afde3d26118
+
+https://arxiv.org/abs/2309.04269
+
+
