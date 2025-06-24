@@ -43,3 +43,5 @@ unstructured
 python-magic
 
 selenium
+
+langchain_openai
