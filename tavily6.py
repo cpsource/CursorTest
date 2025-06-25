@@ -163,6 +163,7 @@ def main():
     
     # Test queries
     test_queries = [
+        "Available jobs for an Software architect, tech lead, and product evangelist.",
         "Furnished appartments to rent in San Francisco",
         "Available jobs for an Embedded AI software consultant",
         "Python 3.12 new features",
