@@ -11,11 +11,37 @@ from dotenv import load_dotenv
 from langchain_openai import OpenAI
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
+import threading
+from datetime import datetime, timedelta
+
+class RateLimiter:
+    """Rate limiter to control request frequency"""
+    def __init__(self, min_interval=2.0):
+        self.min_interval = min_interval  # Minimum seconds between requests
+        self.last_request_time = 0
+        self.lock = threading.Lock()
+    
+    def wait_if_needed(self):
+        """Wait if needed to respect rate limit"""
+        with self.lock:
+            current_time = time.time()
+            time_since_last = current_time - self.last_request_time
+            
+            if time_since_last < self.min_interval:
+                wait_time = self.min_interval - time_since_last
+                print(f"⏳ Rate limiting: waiting {wait_time:.1f} seconds...")
+                time.sleep(wait_time)
+            
+            self.last_request_time = time.time()
+            print(f"✅ Rate limit check passed at {datetime.now().strftime('%H:%M:%S')}")
 
 class SubletBot:
     def __init__(self):
         self.results = []
         print("SubletBot initialized")
+        
+        # Initialize rate limiter for Craigslist (2 seconds between requests)
+        self.craigslist_rate_limiter = RateLimiter(min_interval=2.0)
         
         # Load environment variables from .env file
         self.load_environment()
@@ -234,6 +260,9 @@ Return ONLY the distance in tenths of miles as a decimal number (e.g., 0.8, 1.2,
         try:
             print(f"🔍 Calculating distance for location: '{location}'")
             
+            # Apply rate limiting for OpenAI API calls too (be nice to their servers)
+            time.sleep(0.5)  # Small delay between distance calculations
+            
             # Run the LangChain to get distance
             result = self.distance_chain.run(listing=location)
             print(f"🤖 OpenAI response: '{result}'")
@@ -260,9 +289,13 @@ Return ONLY the distance in tenths of miles as a decimal number (e.g., 0.8, 1.2,
             return "Error"
     
     def search_craigslist(self, bedrooms, bathrooms, max_price=5000):
-        """Search Craigslist SF Bay Area for real listings"""
+        """Search Craigslist SF Bay Area for real listings with rate limiting"""
         print(f"=== SEARCH STARTED ===")
         print(f"Parameters: {bedrooms}BR, {bathrooms}BA, max ${max_price}")
+        
+        # Apply rate limiting before making the request
+        print("🚦 Applying Craigslist rate limiting...")
+        self.craigslist_rate_limiter.wait_if_needed()
         
         base_url = "https://sfbay.craigslist.org/search/sfc/sub"
         
@@ -282,12 +315,14 @@ Return ONLY the distance in tenths of miles as a decimal number (e.g., 0.8, 1.2,
         print(f"With params: {params}")
         
         try:
-            response = requests.get(base_url, params=params, headers=headers)
+            response = requests.get(base_url, params=params, headers=headers, timeout=15)
             print(f"Response status code: {response.status_code}")
             print(f"Response length: {len(response.content)} bytes")
             
             if response.status_code != 200:
                 print(f"Bad response: {response.status_code}")
+                if response.status_code == 429:
+                    print("⚠️  Rate limited by Craigslist - consider increasing delay")
                 return []
             
             soup = BeautifulSoup(response.content, 'html.parser')
@@ -359,6 +394,9 @@ Return ONLY the distance in tenths of miles as a decimal number (e.g., 0.8, 1.2,
             
             for result in search_results[:10]:  # Limit to first 10 results
                 try:
+                    # Apply rate limiting between parsing individual listings if needed
+                    # (This is optional since we're just parsing, not making new requests)
+                    
                     # Handle different types of elements
                     if result.name == 'a':  # If we're working with direct links
                         title = result.get_text(strip=True)
@@ -786,8 +824,8 @@ def get_bot():
     return global_bot
 
 def search_apartments(bedrooms, bathrooms, max_price):
-    """Main search function for Gradio interface - focused on Craigslist"""
-    print(f"=== CRAIGSLIST SEARCH STARTED ===")
+    """Main search function for Gradio interface - focused on Craigslist with rate limiting"""
+    print(f"=== RATE-LIMITED CRAIGSLIST SEARCH STARTED ===")
     print(f"Inputs: bedrooms={bedrooms}, bathrooms={bathrooms}, max_price={max_price}")
     
     # Use the global bot instance
@@ -795,15 +833,23 @@ def search_apartments(bedrooms, bathrooms, max_price):
     
     all_results = []
     
-    # Search Craigslist with enhanced parsing
-    print(f"🔍 Searching Craigslist with enhanced parsing...")
+    # Search Craigslist with enhanced parsing and rate limiting
+    print(f"🔍 Searching Craigslist with rate limiting (2-second intervals)...")
+    start_time = time.time()
+    
     craigslist_results = bot.search_craigslist(bedrooms, bathrooms, max_price)
     all_results.extend(craigslist_results)
-    print(f"✅ Craigslist: {len(craigslist_results)} listings")
+    
+    end_time = time.time()
+    search_duration = end_time - start_time
+    print(f"✅ Craigslist: {len(craigslist_results)} listings found in {search_duration:.1f} seconds")
     
     # Other sites commented out due to anti-bot protections
+    # Uncomment and add rate limiting if you want to enable them:
+    
     # print(f"🔍 Searching Zillow...")
     # try:
+    #     time.sleep(1)  # Add delay between different sites
     #     zillow_results = bot.search_zillow(bedrooms, bathrooms, max_price)
     #     all_results.extend(zillow_results)
     #     print(f"✅ Zillow: {len(zillow_results)} listings")
@@ -812,6 +858,7 @@ def search_apartments(bedrooms, bathrooms, max_price):
     
     # print(f"🔍 Searching Apartments.com...")
     # try:
+    #     time.sleep(1)  # Add delay between different sites
     #     apartments_results = bot.search_apartments_dot_com(bedrooms, bathrooms, max_price)
     #     all_results.extend(apartments_results)
     #     print(f"✅ Apartments.com: {len(apartments_results)} listings")
@@ -826,7 +873,7 @@ def search_apartments(bedrooms, bathrooms, max_price):
     # except Exception as e:
     #     print(f"❌ Facebook failed: {e}")
     
-    print(f"🎯 Total listings found: {len(all_results)} from Craigslist")
+    print(f"🎯 Total listings found: {len(all_results)} from Craigslist (rate-limited)")
     
     # Apply filtering and sorting to results
     if all_results:
@@ -843,7 +890,7 @@ def search_apartments(bedrooms, bathrooms, max_price):
     return formatted_results
 
 def create_interface():
-    print("Creating Gradio interface...")
+    print("Creating Gradio interface with rate limiting info...")
     
     interface = gr.Interface(
         fn=search_apartments,
@@ -853,8 +900,8 @@ def create_interface():
             gr.Slider(1000, 8000, value=3000, step=100, label="Maximum Price ($)")
         ],
         outputs=gr.HTML(label="Search Results"),
-        title="🏠 SF Sublet & Furnished Apartment Finder",
-        description="Search for sublets and furnished apartments in San Francisco. Move sliders to update search criteria.",
+        title="🏠 SF Sublet & Furnished Apartment Finder (Rate Limited)",
+        description="Search for sublets and furnished apartments in San Francisco. Rate limited to 1 request per 2 seconds to respect Craigslist servers. Move sliders to update search criteria.",
         theme=gr.themes.Soft(),
         allow_flagging="never",
         live=False,  # Disable live updates - require submit button
@@ -865,8 +912,9 @@ def create_interface():
     return interface
 
 if __name__ == "__main__":
-    print("=== STARTING APPLICATION ===")
-    print("Starting SF Apartment Bot...")
+    print("=== STARTING RATE-LIMITED APPLICATION ===")
+    print("Starting SF Apartment Bot with rate limiting...")
+    print("Rate limit: 1 Craigslist request per 2 seconds minimum")
     print("Server will be available at: http://0.0.0.0:7862")
     
     app = create_interface()
