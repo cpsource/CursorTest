@@ -5,3 +5,4 @@ zz*
 __pycache__/
 *.pyc
 .DS_Store
+tmp/*

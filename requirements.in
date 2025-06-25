@@ -42,6 +42,10 @@ docx2txt
 unstructured
 python-magic
 
-selenium
+#selenium
 
 langchain_openai
+langgraph
+langchain-tavily
+
+langgraph
