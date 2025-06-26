@@ -51,3 +51,9 @@ langchain-tavily
 langgraph
 
 duckduckgo_search
+
+# web page development
+fastapi
+uvicorn
+python-multipart
+

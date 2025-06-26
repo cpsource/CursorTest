@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAG Document Q&A System</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>
+                <span class="emoji">🤖</span>
+                RAG Document Q&A System
+            </h1>
+            <div class="subtitle">Upload your document (PDF, DOC, DOCX, or TXT) and ask questions about its content!</div>
+            <div class="highlight">
+                <span class="emoji">✨</span>
+                Perfect for job seekers analyzing resumes, cover letters, and job descriptions!
+                <span class="emoji">✨</span>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="upload-section">
+                <div class="upload-buttons">
+                    <button class="btn btn-primary">
+                        <span class="emoji">📁</span>
+                        Upload Document
+                    </button>
+                    <button class="btn btn-secondary">
+                        <span class="emoji">💬</span>
+                        Chat History
+                    </button>
+                </div>
+
+                <div class="upload-area">
+                    <div class="upload-icon">📄</div>
+                    <div class="upload-text">Drop File Here</div>
+                    <div class="upload-subtext">- or -</div>
+                    <div class="upload-subtext">Click to Upload</div>
+                </div>
+
+                <div class="status-message">
+                    No file uploaded
+                </div>
+
+                <button class="clear-chat">
+                    🗑️ Clear Chat
+                </button>
+            </div>
+
+            <div class="info-section">
+                <div class="info-title">
+                    <span class="emoji">📋</span>
+                    Supported Formats:
+                </div>
+                <ul class="format-list">
+                    <li class="format-item">
+                        <div class="format-icon pdf-icon">PDF</div>
+                        <span>Portable Document Format</span>
+                    </li>
+                    <li class="format-item">
+                        <div class="format-icon doc-icon">DOC</div>
+                        <span>Microsoft Word documents</span>
+                    </li>
+                    <li class="format-item">
+                        <div class="format-icon txt-icon">TXT</div>
+                        <span>Plain text files</span>
+                    </li>
+                </ul>
+
+                <div class="info-title">
+                    <span class="emoji">💡</span>
+                    Tips for Job Seekers:
+                </div>
+                <div class="tips-section">
+                    <div class="tip-item">
+                        <div class="tip-title">Ask specific questions about your documents</div>
+                        <div class="tip-text">Try questions like "What skills are highlighted?" or "Summarize my experience"</div>
+                    </div>
+                    <div class="tip-item">
+                        <div class="tip-title">For job descriptions</div>
+                        <div class="tip-text">"What qualifications are required?" or "What are the key responsibilities?"</div>
+                    </div>
+                    <div class="tip-item">
+                        <div class="tip-title">For resumes</div>
+                        <div class="tip-text">"What achievements stand out?" or "How can I improve this?"</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="query-section">
+                <textarea 
+                    class="query-input" 
+                    placeholder="Ask a question about the uploaded document..."
+                ></textarea>
+                <button class="send-btn" disabled>
+                    <span class="emoji">🚀</span>
+                    Send
+                </button>
+                <div style="clear: both;"></div>
+            </div>
+
+            <div class="response-section">
+                <div class="response-title">
+                    <span class="emoji">🤖</span>
+                    Response
+                </div>
+                <div class="response-content"></div>
+            </div>
+
+            <div class="motivation-message">
+                <span class="emoji">🌟</span>
+                Every response includes encouragement to keep you motivated!
+                <span class="emoji">🌟</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentFileId = null;
+        const uploadArea = document.querySelector('.upload-area');
+        const statusMessage = document.querySelector('.status-message');
+        const queryInput = document.querySelector('.query-input');
+        const sendBtn = document.querySelector('.send-btn');
+        const responseSection = document.querySelector('.response-section');
+        const responseContent = document.querySelector('.response-content');
+
+        // API endpoints
+        const API_BASE = '/api';
+
+        // Handle drag and drop
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFileUpload(files[0]);
+            }
+        });
+
+        // Handle upload button click
+        document.querySelector('.btn-primary').addEventListener('click', () => {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.pdf,.doc,.docx,.txt';
+            input.onchange = (e) => {
+                if (e.target.files.length > 0) {
+                    handleFileUpload(e.target.files[0]);
+                }
+            };
+            input.click();
+        });
+
+        // Handle click to upload (upload area)
+        uploadArea.addEventListener('click', () => {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.pdf,.doc,.docx,.txt';
+            input.onchange = (e) => {
+                if (e.target.files.length > 0) {
+                    handleFileUpload(e.target.files[0]);
+                }
+            };
+            input.click();
+        });
+
+        // File upload handler
+        async function handleFileUpload(file) {
+            const formData = new FormData();
+            formData.append('file', file);
+            
+            // Show loading status
+            updateStatus('🔄 Uploading file...', 'loading');
+            console.log('Uploading file:', file.name, 'Size:', file.size, 'Type:', file.type);
+            
+            try {
+                const response = await fetch(`${API_BASE}/upload`, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                console.log('Upload response status:', response.status);
+                const result = await response.json();
+                console.log('Upload result:', result);
+                
+                if (response.ok) {
+                    currentFileId = result.file_id;
+                    let message = `✅ ${result.message}`;
+                    if (result.processing_error) {
+                        message += `\n⚠️ Processing note: ${result.processing_error}`;
+                    }
+                    if (!result.rag_available) {
+                        message += '\n📋 Running in demo mode';
+                    }
+                    updateStatus(message, 'success');
+                    sendBtn.disabled = false;
+                } else {
+                    updateStatus(`❌ ${result.detail || 'Upload failed'}`, 'error');
+                    currentFileId = null;
+                    sendBtn.disabled = true;
+                }
+            } catch (error) {
+                console.error('Upload error:', error);
+                updateStatus(`❌ Upload failed: ${error.message}`, 'error');
+                currentFileId = null;
+                sendBtn.disabled = true;
+            }
+        }
+
+        // Update status message
+        function updateStatus(message, type = 'default') {
+            statusMessage.innerHTML = message;
+            statusMessage.className = `status-message ${type}`;
+        }
+
+        // Handle send button
+        sendBtn.addEventListener('click', async () => {
+            const query = queryInput.value.trim();
+            if (!query || !currentFileId) return;
+            
+            sendBtn.disabled = true;
+            sendBtn.innerHTML = '<div class="loading-spinner"></div> Processing...';
+            
+            try {
+                const response = await fetch(`${API_BASE}/query`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        query: query,
+                        file_id: currentFileId
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    showResponse(result.answer);
+                } else {
+                    showResponse(`Error: ${result.detail}`, true);
+                }
+            } catch (error) {
+                showResponse(`Error: ${error.message}`, true);
+            } finally {
+                sendBtn.disabled = false;
+                sendBtn.innerHTML = '<span class="emoji">🚀</span> Send';
+            }
+        });
+
+        // Show response
+        function showResponse(content, isError = false) {
+            responseContent.textContent = content;
+            responseSection.classList.add('show');
+            if (isError) {
+                responseContent.style.color = '#991b1b';
+            } else {
+                responseContent.style.color = '#4b5563';
+            }
+            responseSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Handle enter key in textarea
+        queryInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && e.ctrlKey && !sendBtn.disabled) {
+                sendBtn.click();
+            }
+        });
+
+        // Clear chat functionality
+        document.querySelector('.clear-chat').addEventListener('click', () => {
+            queryInput.value = '';
+            responseSection.classList.remove('show');
+            if (!currentFileId) {
+                updateStatus('No file uploaded');
+                sendBtn.disabled = true;
+            }
+        });
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            updateStatus('No file uploaded');
+            sendBtn.disabled = true;
+        });
+    </script>
+</body>
+</html>
+
