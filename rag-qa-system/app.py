@@ -428,20 +428,23 @@ app = FastAPI(title="RAG Document Q&A System", version="1.0.0")
 # Create logging
 import logging
 import os
-from logging.handlers import SysLogHandler
-#from fastapi import FastAPI, Request
-# Setup logging to /var/log/FastAPI/uvicorn.access
-log_dir = Path("/var/log/FastAPI")
-#log_dir.mkdir(parents=True, exist_ok=True)  # Create directory if it doesn't exist
-log_file = log_dir / "uvicorn.access"
-logger = logging.getLogger("uvicorn.access")
-logger.setLevel(logging.INFO)
-# File handler
-handler = logging.FileHandler(log_file)
-formatter = logging.Formatter('%(asctime)s [%(levelname)s] %(message)s')
-handler.setFormatter(formatter)
-logger.addHandler(handler)
-# logger.info(f"Received request from {client_ip} to /")
+
+import logging
+from pathlib import Path
+
+import logging
+from pathlib import Path
+
+# Create directory
+Path("/var/log/FastAPI").mkdir(parents=True, exist_ok=True)
+
+# Configure the specific uvicorn access logger
+access_logger = logging.getLogger("uvicorn.access")
+access_logger.setLevel(logging.INFO)
+
+handler = logging.FileHandler('/var/log/FastAPI/uvicorn.access')
+handler.setFormatter(logging.Formatter('%(asctime)s [%(levelname)s] %(message)s'))
+access_logger.addHandler(handler)
 
 # Serve static files (CSS, JS, HTML)
 app.mount("/static", StaticFiles(directory="static"), name="static")

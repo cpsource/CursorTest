@@ -1,0 +1,18 @@
+[Unit]
+Description=RAG Chatbot Application
+After=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/mnt/AI-Agents-in-LangGraph/rag-qa-system
+Environment=PATH=/home/ubuntu/mnt/myproject/bin:/mnt/AI-Agents-in-LangGraph/rag-qa-system:/usr/local/bin:/usr/bin:/bin
+Environment=VIRTUAL_ENV=/home/ubuntu/mnt/myproject
+ExecStart=/bin/bash -c 'source /home/ubuntu/mnt/myproject/bin/activate && uvicorn app:app --host 0.0.0.0 --port 7863'
+
+#Restart=always
+Restart=no
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
