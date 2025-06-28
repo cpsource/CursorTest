@@ -1,0 +1,24 @@
+[Unit]
+Description=Jupyter Application
+After=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+
+WorkingDirectory=/mnt/AI-Agents-in-LangGraph/rag-qa-system
+
+Environment=PATH=/home/ubuntu/mnt/myproject/bin:/mnt/AI-Agents-in-LangGraph/rag-qa-system:/usr/local/bin:/usr/bin:/bin
+
+Environment=VIRTUAL_ENV=/home/ubuntu/mnt/myproject
+ExecStart=/bin/bash -c 'source /home/ubuntu/mnt/myproject/bin/activate && jupyter lab'
+
+Restart=on-failure
+#Restart=no
+RestartSec=10
+# If more than 2 restarts happen in 60 seconds, systemd stops trying
+StartLimitBurst=2
+StartLimitIntervalSec=60
+
+[Install]
+WantedBy=multi-user.target
