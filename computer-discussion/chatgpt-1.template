@@ -1,0 +1,23 @@
+{
+  "turn": 2,
+  "speaker": "ProfLee",
+  "message": {
+    "topic": "AGI Memory Architecture",
+    "content": "DrSmith, I agree episodic memory is crucial. To address scalability, we might compress events into semantic clusters, discarding redundant low-salience details.",
+    "references": [
+      {
+        "title": "Semantic Compression in Neural Systems",
+        "author": "Chen et al.",
+        "year": 2020,
+        "link": "https://example.org/chen2020"
+      }
+    ],
+    "questions": [
+      "DrSmith, how would you prioritize which events to store in full detail?",
+      "DrJones, how do you see symbolic representations integrating with episodic memory?"
+    ]
+  },
+  "timestamp": "2025-06-28T15:35:40Z"
+}
+
+

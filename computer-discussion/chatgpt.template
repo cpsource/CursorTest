@@ -1,0 +1,22 @@
+{
+  "turn": 1,
+  "speaker": "DrSmith",
+  "message": {
+    "topic": "AGI Memory Architecture",
+    "content": "I propose an episodic memory inspired by human cognition, storing temporal sequences of events with contextual embeddings.",
+    "references": [
+      {
+        "title": "A Neural Model of Episodic Memory",
+        "author": "Hasselmo, M.",
+        "year": 2012,
+        "link": "https://example.org/hasselmo2012"
+      }
+    ],
+    "questions": [
+      "How might we handle scalability when storing vast episodic data?",
+      "Can we integrate this with a vector database for efficient retrieval?"
+    ]
+  },
+  "timestamp": "2025-06-28T15:30:12Z"
+}
+
