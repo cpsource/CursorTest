@@ -1,0 +1,18 @@
+[Unit]
+Description=RAG Chatbot Application
+After=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu/mnt/myproject
+Environment=PATH=/home/ubuntu/mnt/myproject/bin:/usr/local/bin:/usr/bin:/bin
+Environment=VIRTUAL_ENV=/home/ubuntu/mnt/myproject
+ExecStart=/bin/bash -c 'source /home/ubuntu/mnt/myproject/bin/activate && python3 job-finder12.py'
+
+#Restart=always
+Restart=no
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
