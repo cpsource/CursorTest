@@ -1,0 +1,6 @@
+https://github.com/open-webui/open-webui
+https://github.com/ollama/ollama
+
+# models stored here
+/usr/share/ollama/.ollama
+

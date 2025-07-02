@@ -1,0 +1,16 @@
+[Unit]
+Description=Ollama Service
+After=network-online.target
+
+[Service]
+ExecStart=/usr/local/bin/ollama serve
+User=ollama
+Group=ollama
+Restart=on-failure
+RestartSec=10
+StartBurstLimit=3
+Environment="OLLAMA_HOST=0.0.0.0:11434"
+Environment="PATH=/home/ubuntu/mnt/myproject/bin:/home/ubuntu/miniconda3/condabin:/opt/emacs-30.1/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
+
+[Install]
+WantedBy=default.target
