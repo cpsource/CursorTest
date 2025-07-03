@@ -1,0 +1,31 @@
+Add rule
+Application     Protocol        Port or range / Code    Restricted to
+SSH     TCP
+22
+Any IPv4 address
+
+Lightsail browser SSH/RDP
+HTTP    TCP
+80
+Any IPv4 address
+
+HTTPS   TCP
+443
+Any IPv4 address
+
+MySQL/Aurora    TCP
+3306
+Any IPv4 address
+
+Custom  TCP
+7860
+7865
+Any IPv4 address
+
+Custom  TCP
+8080
+Any IPv4 address
+
+Custom  TCP
+11434
+Any IPv4 address
