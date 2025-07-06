@@ -1,0 +1,121 @@
+<svg viewBox="0 0 600 500" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="600" height="500" fill="#f8f9fa"/>
+  
+  <!-- Title -->
+  <text x="300" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#2c3e50">
+    Sacroiliitis - Inflammation of Sacroiliac Joints
+  </text>
+  
+  <!-- Normal vs Inflamed comparison -->
+  <text x="150" y="70" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#27ae60">
+    Normal SI Joint
+  </text>
+  <text x="450" y="70" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#e74c3c">
+    Inflamed SI Joint (Sacroiliitis)
+  </text>
+  
+  <!-- Left side - Normal anatomy -->
+  <g transform="translate(50, 80)">
+    <!-- Sacrum -->
+    <path d="M75 50 L125 50 L130 120 L120 180 L110 220 L90 220 L80 180 L70 120 Z" 
+          fill="#e8d5b7" stroke="#8b4513" stroke-width="2"/>
+    
+    <!-- Left Ilium -->
+    <path d="M30 80 L70 120 L80 180 L70 220 L40 240 L20 200 L10 150 L20 100 Z" 
+          fill="#e8d5b7" stroke="#8b4513" stroke-width="2"/>
+    
+    <!-- Right Ilium -->
+    <path d="M130 120 L170 80 L180 100 L190 150 L180 200 L160 240 L130 220 L120 180 Z" 
+          fill="#e8d5b7" stroke="#8b4513" stroke-width="2"/>
+    
+    <!-- Normal SI joints (thin blue lines) -->
+    <line x1="75" y1="120" x2="70" y2="120" stroke="#3498db" stroke-width="3"/>
+    <line x1="75" y1="140" x2="70" y2="140" stroke="#3498db" stroke-width="3"/>
+    <line x1="75" y1="160" x2="70" y2="160" stroke="#3498db" stroke-width="3"/>
+    <line x1="75" y1="180" x2="70" y2="180" stroke="#3498db" stroke-width="3"/>
+    
+    <line x1="125" y1="120" x2="130" y2="120" stroke="#3498db" stroke-width="3"/>
+    <line x1="125" y1="140" x2="130" y2="140" stroke="#3498db" stroke-width="3"/>
+    <line x1="125" y1="160" x2="130" y2="160" stroke="#3498db" stroke-width="3"/>
+    <line x1="125" y1="180" x2="130" y2="180" stroke="#3498db" stroke-width="3"/>
+    
+    <!-- Labels -->
+    <text x="100" y="40" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#2c3e50">Sacrum</text>
+    <text x="30" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#2c3e50">Left Ilium</text>
+    <text x="170" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#2c3e50">Right Ilium</text>
+    <text x="100" y="260" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#3498db">Normal SI Joints</text>
+  </g>
+  
+  <!-- Right side - Inflamed anatomy -->
+  <g transform="translate(350, 80)">
+    <!-- Sacrum -->
+    <path d="M75 50 L125 50 L130 120 L120 180 L110 220 L90 220 L80 180 L70 120 Z" 
+          fill="#e8d5b7" stroke="#8b4513" stroke-width="2"/>
+    
+    <!-- Left Ilium -->
+    <path d="M30 80 L70 120 L80 180 L70 220 L40 240 L20 200 L10 150 L20 100 Z" 
+          fill="#e8d5b7" stroke="#8b4513" stroke-width="2"/>
+    
+    <!-- Right Ilium -->
+    <path d="M130 120 L170 80 L180 100 L190 150 L180 200 L160 240 L130 220 L120 180 Z" 
+          fill="#e8d5b7" stroke="#8b4513" stroke-width="2"/>
+    
+    <!-- Inflamed SI joints (thick red lines with swelling) -->
+    <line x1="75" y1="120" x2="65" y2="120" stroke="#e74c3c" stroke-width="8" opacity="0.8"/>
+    <line x1="75" y1="140" x2="65" y2="140" stroke="#e74c3c" stroke-width="8" opacity="0.8"/>
+    <line x1="75" y1="160" x2="65" y2="160" stroke="#e74c3c" stroke-width="8" opacity="0.8"/>
+    <line x1="75" y1="180" x2="65" y2="180" stroke="#e74c3c" stroke-width="8" opacity="0.8"/>
+    
+    <line x1="125" y1="120" x2="135" y2="120" stroke="#e74c3c" stroke-width="8" opacity="0.8"/>
+    <line x1="125" y1="140" x2="135" y2="140" stroke="#e74c3c" stroke-width="8" opacity="0.8"/>
+    <line x1="125" y1="160" x2="135" y2="160" stroke="#e74c3c" stroke-width="8" opacity="0.8"/>
+    <line x1="125" y1="180" x2="135" y2="180" stroke="#e74c3c" stroke-width="8" opacity="0.8"/>
+    
+    <!-- Inflammation indicators (red halos) -->
+    <circle cx="70" cy="150" r="25" fill="#e74c3c" opacity="0.3"/>
+    <circle cx="130" cy="150" r="25" fill="#e74c3c" opacity="0.3"/>
+    
+    <!-- Pain indicators (lightning bolts) -->
+    <path d="M55 140 L65 130 L60 135 L70 125 L60 135 L65 140 Z" fill="#f39c12" stroke="#d68910" stroke-width="1"/>
+    <path d="M145 140 L135 130 L140 135 L130 125 L140 135 L135 140 Z" fill="#f39c12" stroke="#d68910" stroke-width="1"/>
+    
+    <!-- Labels -->
+    <text x="100" y="40" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#2c3e50">Sacrum</text>
+    <text x="30" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#2c3e50">Left Ilium</text>
+    <text x="170" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#2c3e50">Right Ilium</text>
+    <text x="100" y="260" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#e74c3c">Inflamed SI Joints</text>
+  </g>
+  
+  <!-- Legend -->
+  <g transform="translate(50, 350)">
+    <rect x="0" y="0" width="500" height="120" fill="#ffffff" stroke="#bdc3c7" stroke-width="1" rx="5"/>
+    <text x="250" y="20" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">Key Features of Sacroiliitis</text>
+    
+    <!-- Legend items -->
+    <circle cx="20" cy="45" r="8" fill="#e74c3c" opacity="0.3"/>
+    <text x="40" y="50" font-family="Arial, sans-serif" font-size="14" fill="#2c3e50">Inflammation and swelling</text>
+    
+    <line x1="20" y1="65" x2="35" y2="65" stroke="#e74c3c" stroke-width="6"/>
+    <text x="40" y="70" font-family="Arial, sans-serif" font-size="14" fill="#2c3e50">Thickened, irritated joint space</text>
+    
+    <path d="M20 85 L30 75 L25 80 L35 70 L25 80 L30 85 Z" fill="#f39c12"/>
+    <text x="40" y="90" font-family="Arial, sans-serif" font-size="14" fill="#2c3e50">Pain and stiffness</text>
+    
+    <text x="280" y="50" font-family="Arial, sans-serif" font-size="14" fill="#2c3e50">Common symptoms:</text>
+    <text x="280" y="70" font-family="Arial, sans-serif" font-size="12" fill="#2c3e50">• Lower back pain</text>
+    <text x="280" y="85" font-family="Arial, sans-serif" font-size="12" fill="#2c3e50">• Buttock pain</text>
+    <text x="280" y="100" font-family="Arial, sans-serif" font-size="12" fill="#2c3e50">• Stiffness after rest</text>
+    
+    <text x="420" y="50" font-family="Arial, sans-serif" font-size="14" fill="#2c3e50">Causes:</text>
+    <text x="420" y="70" font-family="Arial, sans-serif" font-size="12" fill="#2c3e50">• Arthritis</text>
+    <text x="420" y="85" font-family="Arial, sans-serif" font-size="12" fill="#2c3e50">• Injury</text>
+    <text x="420" y="100" font-family="Arial, sans-serif" font-size="12" fill="#2c3e50">• Infection</text>
+  </g>
+  
+  <!-- Anatomical orientation -->
+  <g transform="translate(520, 400)">
+    <text x="0" y="0" font-family="Arial, sans-serif" font-size="12" fill="#7f8c8d">Posterior View</text>
+    <text x="0" y="15" font-family="Arial, sans-serif" font-size="12" fill="#7f8c8d">(Back of pelvis)</text>
+  </g>
+</svg>
