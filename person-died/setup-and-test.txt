@@ -1,0 +1,36 @@
+# requirements.txt
+langchain-anthropic>=0.1.15
+langchain-core>=0.1.52
+langgraph>=0.2.0
+anthropic>=0.25.0
+
+# Setup Instructions:
+
+## 1. Install dependencies
+pip install -r requirements.txt
+
+## 2. Set up your Anthropic API key
+# Option A: Environment variable
+export ANTHROPIC_API_KEY="your_api_key_here"
+
+# Option B: Pass as argument
+python person_age_query.py "Albert Einstein" --api-key your_api_key_here
+
+## 3. Usage Examples:
+python person_age_query.py "Ludwig van Beethoven"
+python person_age_query.py "Albert Einstein"
+python person_age_query.py "Marie Curie"
+python person_age_query.py "Winston Churchill"
+
+## 4. Expected Output Format:
+==================================================
+QUERY RESULT FOR: Ludwig van Beethoven
+==================================================
+
+Claude's Response:
+Ludwig van Beethoven died at age 56 in 1827. He was born in December 1770 in Bonn and passed away in Vienna on March 26, 1827. Beethoven was a German composer and pianist who is widely regarded as one of the greatest composers in the history of Western music.
+
+Extracted Age: 56 years old
+
+==================================================
+
