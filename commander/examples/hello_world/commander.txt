@@ -1,15 +1,15 @@
-For the attached hello_world.html, do the following:
+For the file hello_world.html, perform the following tasks:
 
-1. turn it into a real web page with all the trimings. Be sure to use bootstrap.min version 4.
-Don't use any inline css, but instead create file hello_world.css and reference that from
-the html file.
+1. Transform it into a complete web page with all standard elements. Use Bootstrap 4 (bootstrap.min.css).
+   - Do not use inline CSS
+   - Create a separate file called hello_world.css and reference it from the HTML
+   - Display the "Hello World" message centered on the page, in bold, using 20pt font size
 
-1a. I want the hello world message to be displayed centered on the page, in bold, and about
-20 point type.
+2. Create a Python program called webserve.py that:
+   - Starts a minimal web server on http://127.0.0.1:8123
+   - Runs in the foreground until the user presses Ctrl+C
+   - Serves the hello_world.html file
 
-2. When you are done with that, create a python program called webserve.py. It will invoke a minimal web
-server on http://127.0.0.1:8123. The web server and web.py will run in the foreground until
-the operator types a control c.
-
-3. When you are done with that, create a README.md explaining how to run webserve.py and how then
-to point your browser at the url in step 2 so that you can see your results.
+3. Create a README.md file that explains:
+   - How to run webserve.py
+   - How to point a browser to the correct URL to view the results
